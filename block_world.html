@@ -162,17 +162,17 @@
                     studs.push({ x: 150 + i * 130, y: 280, collected: false });
                 }
             } else {
-                // Normal level - procedural generation
-                const numPlatforms = 4 + Math.floor(levelNum / 10);
-                let lastX = 50, lastY = 350;
+                // Normal level - procedural generation (EASY MODE)
+                const numPlatforms = 5 + Math.floor(levelNum / 8);
+                let lastX = 50, lastY = 360;
 
                 for (let i = 0; i < numPlatforms; i++) {
-                    const width = 60 + Math.random() * 80;
-                    const x = lastX + 80 + Math.random() * 100;
-                    const y = Math.max(100, Math.min(380, lastY + (Math.random() - 0.5) * 120));
+                    const width = 100 + Math.random() * 60; // Bigger platforms
+                    const x = lastX + 60 + Math.random() * 50; // Smaller gaps
+                    const y = Math.max(150, Math.min(380, lastY + (Math.random() - 0.5) * 80)); // Less height variation
 
                     if (x + width < 780) {
-                        platforms.push({ x, y, width, height: 25, color: colors[i % colors.length] });
+                        platforms.push({ x, y, width, height: 28, color: colors[i % colors.length] });
                         studs.push({ x: x + width/2 - 20, y: y - 30, collected: false });
                         studs.push({ x: x + width/2 + 20, y: y - 30, collected: false });
                         lastX = x;
@@ -180,14 +180,14 @@
                     }
                 }
 
-                // Add enemies based on difficulty
-                const numEnemies = Math.min(1 + Math.floor(levelNum / 15), 5);
+                // Fewer and slower enemies
+                const numEnemies = Math.min(1 + Math.floor(levelNum / 25), 3);
                 for (let i = 0; i < numEnemies; i++) {
                     const platIndex = i % platforms.length;
                     const plat = platforms[platIndex];
                     enemies.push({
                         x: plat.x + 20, y: plat.y - 50, width: 35, height: 50,
-                        velX: (1 + difficulty * 0.15) * (Math.random() > 0.5 ? 1 : -1),
+                        velX: (0.8 + difficulty * 0.08) * (Math.random() > 0.5 ? 1 : -1), // Slower
                         type: i % 3, platIndex, alive: true
                     });
                 }
