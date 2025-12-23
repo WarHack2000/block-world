@@ -164,21 +164,27 @@
                     studs.push({ x: 150 + i * 130, y: 280, collected: false });
                 }
             } else {
-                // Normal level - SUPER EASY MODE
-                const numPlatforms = 6 + Math.floor(levelNum / 10);
-                let lastX = 30, lastY = 370;
+                // Normal level - SPREAD OUT MODE
+                const numPlatforms = 8 + Math.floor(levelNum / 8);
 
                 for (let i = 0; i < numPlatforms; i++) {
-                    const width = 140 + Math.random() * 50; // HUGE platforms
-                    const x = lastX + 40 + Math.random() * 30; // TINY gaps
-                    const y = Math.max(200, Math.min(385, lastY + (Math.random() - 0.5) * 50)); // Almost flat
+                    const width = 80 + Math.random() * 60;
+                    // Random positions spread across the screen
+                    const x = 30 + Math.random() * (canvas.width - width - 60);
+                    const y = 120 + Math.random() * 280; // Between 120 and 400
 
-                    if (x + width < 790) {
-                        platforms.push({ x, y, width, height: 30, color: colors[i % colors.length] });
-                        // Studs right on the platform, easy to get
+                    // Check it doesn't overlap too much with existing platforms
+                    let canPlace = true;
+                    for (let p of platforms) {
+                        if (Math.abs(p.x - x) < 100 && Math.abs(p.y - y) < 50) {
+                            canPlace = false;
+                            break;
+                        }
+                    }
+
+                    if (canPlace) {
+                        platforms.push({ x, y, width, height: 28, color: colors[i % colors.length] });
                         studs.push({ x: x + width/2, y: y - 25, collected: false });
-                        lastX = x;
-                        lastY = y;
                     }
                 }
 
@@ -187,7 +193,7 @@
                 for (let i = 0; i < numEnemies; i++) {
                     enemies.push({
                         x: 400 + i * 150, y: 370, width: 35, height: 50,
-                        velX: 0.5 * (Math.random() > 0.5 ? 1 : -1), // SUPER slow
+                        velX: 0.5 * (Math.random() > 0.5 ? 1 : -1),
                         type: i % 3, platIndex: 0, alive: true
                     });
                 }
