@@ -91,7 +91,7 @@
             { name: 'ADVENTURER', bodyColor: '#e63946', headColor: '#f4c45a', hairColor: '#8B4513', hasHelmet: false, hasMask: false, hasWizardHat: false,
               ability: 'DOUBLE JUMP', abilityDesc: 'Jump again in mid-air!', cooldown: 60 },
             { name: 'BUILDER', bodyColor: '#0077b6', headColor: '#f4c45a', hairColor: null, hasHelmet: true, hasMask: false, hasWizardHat: false,
-              ability: 'BUILD PLATFORM', abilityDesc: 'Create a temporary platform!', cooldown: 180 },
+              ability: 'MOVE BRICK', abilityDesc: 'Pick up and place bricks!', cooldown: 30 },
             { name: 'NINJA', bodyColor: '#2d6a4f', headColor: '#f4c45a', hairColor: null, hasHelmet: false, hasMask: true, hasWizardHat: false,
               ability: 'DASH', abilityDesc: 'Super speed dash!', cooldown: 90 },
             { name: 'WIZARD', bodyColor: '#7b2cbf', headColor: '#f4c45a', hairColor: null, hasHelmet: false, hasMask: false, hasWizardHat: true,
@@ -101,6 +101,7 @@
         let canDoubleJump = false;
         let tempPlatforms = [];
         let fireballs = [];
+        let carriedBrick = null; // Builder carries a brick
 
         // Player
         const player = { x: 50, y: 300, width: 40, height: 60, velX: 0, velY: 0, speed: 5, jumping: false, grounded: false, facingRight: true };
@@ -135,6 +136,7 @@
             fireballs = [];
             bossProjectiles = [];
             boss = null;
+            carriedBrick = null;
 
             const isBossLevel = [25, 50, 75, 100].includes(levelNum);
             const difficulty = Math.min(levelNum / 10, 10);
@@ -220,9 +222,36 @@
                 case 0: // Adventurer - Double Jump
                     canDoubleJump = true;
                     break;
-                case 1: // Builder - Create Platform
-                    tempPlatforms.push({ x: player.x - 30, y: player.y + player.height + 10, width: 80, height: 15, color: '#00b4d8', timer: 180 });
-                    createParticles(player.x + 20, player.y + player.height, '#00b4d8', 5);
+                case 1: // Builder - Pick up or Place Brick
+                    if (carriedBrick) {
+                        // Place the brick
+                        platforms.push({
+                            x: player.x - 40,
+                            y: player.y + player.height + 5,
+                            width: carriedBrick.width,
+                            height: carriedBrick.height,
+                            color: carriedBrick.color
+                        });
+                        createParticles(player.x + 20, player.y + player.height, carriedBrick.color, 8);
+                        carriedBrick = null;
+                    } else {
+                        // Try to pick up a nearby brick (not the ground)
+                        for (let i = platforms.length - 1; i >= 1; i--) { // Skip ground (index 0)
+                            const plat = platforms[i];
+                            const dist = Math.abs(player.x + 20 - (plat.x + plat.width/2)) + Math.abs(player.y + 60 - plat.y);
+                            if (dist < 100) {
+                                carriedBrick = { width: plat.width, height: plat.height, color: plat.color };
+                                platforms.splice(i, 1);
+                                createParticles(plat.x + plat.width/2, plat.y, plat.color, 8);
+                                break;
+                            }
+                        }
+                        // If no brick nearby, create a new one
+                        if (!carriedBrick) {
+                            carriedBrick = { width: 80, height: 25, color: '#00b4d8' };
+                            createParticles(player.x + 20, player.y + 30, '#00b4d8', 5);
+                        }
+                    }
                     break;
                 case 2: // Ninja - Dash
                     player.velX = player.facingRight ? 20 : -20;
@@ -850,6 +879,13 @@
 
             // Player
             drawMinifig(player.x, player.y, currentChar, invincible);
+
+            // Draw carried brick above player's head
+            if (carriedBrick) {
+                const brickX = player.x + 20 - carriedBrick.width / 2;
+                const brickY = player.y - 35;
+                drawBrick(brickX, brickY, carriedBrick.width, carriedBrick.height, carriedBrick.color);
+            }
 
             // Hotdogs
             for (let hd of hotdogs) drawHotdog(hd);
