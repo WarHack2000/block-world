@@ -54,7 +54,7 @@
 </head>
 <body>
     <h1>BLOCK WORLD</h1>
-    <p class="subtitle">100 LEVELS - 4 BOSSES - 4 ABILITIES</p>
+    <p class="subtitle">100 LEVELS - 4 BOSSES - 16 CHARACTERS</p>
     <canvas id="gameCanvas" width="800" height="450"></canvas>
     <div class="score-board">
         <div class="score-item level">LEVEL: <span id="level">1</span>/100</div>
@@ -64,7 +64,7 @@
         <div class="score-item ability">ABILITY: <span id="abilityName">DOUBLE JUMP</span> [E]</div>
         <div class="score-item ability">COOLDOWN: <span id="cooldown">READY</span></div>
     </div>
-    <p class="controls">ARROWS/WASD: Move | SPACE: Jump | E: Use Ability | 1-8: Switch Character | BOSSES at levels 25, 50, 75, 100!</p>
+    <p class="controls">ARROWS/WASD: Move | SPACE: Jump | E: Use Ability | 1-8, 9, 0, Q, R, T, Y, U, I: Switch Character (16 total!)</p>
 
     <div class="game-over" id="gameOver">
         <h2 id="gameOverTitle">GAME OVER</h2>
@@ -103,13 +103,30 @@
             { name: 'KNIGHT', bodyColor: '#708090', headColor: '#f4c45a', hairColor: null, hasHelmet: false, hasMask: false, hasWizardHat: false, hasKnightHelmet: true,
               ability: 'SHIELD', abilityDesc: 'Become invincible!', cooldown: 150 },
             { name: 'PRINCESS', bodyColor: '#ff69b4', headColor: '#f4c45a', hairColor: '#ffd700', hasHelmet: false, hasMask: false, hasWizardHat: false, hasCrown: true,
-              ability: 'HEAL', abilityDesc: 'Restore a life!', cooldown: 300 }
+              ability: 'HEAL', abilityDesc: 'Restore a life!', cooldown: 300 },
+            { name: 'COWBOY', bodyColor: '#d2691e', headColor: '#f4c45a', hairColor: '#8B4513', hasHelmet: false, hasMask: false, hasWizardHat: false, hasCowboyHat: true,
+              ability: 'LASSO', abilityDesc: 'Pull studs toward you!', cooldown: 60 },
+            { name: 'FIREFIGHTER', bodyColor: '#ff4500', headColor: '#f4c45a', hairColor: null, hasHelmet: false, hasMask: false, hasWizardHat: false, hasFireHelmet: true,
+              ability: 'WATER BLAST', abilityDesc: 'Push enemies away!', cooldown: 80 },
+            { name: 'SCIENTIST', bodyColor: '#98fb98', headColor: '#f4c45a', hairColor: '#fff', hasHelmet: false, hasMask: false, hasWizardHat: false, hasGoggles: true,
+              ability: 'TELEPORT', abilityDesc: 'Teleport forward!', cooldown: 90 },
+            { name: 'ROBOT', bodyColor: '#c0c0c0', headColor: '#a0a0a0', hairColor: null, hasHelmet: false, hasMask: false, hasWizardHat: false, isPlayerRobot: true,
+              ability: 'LASER', abilityDesc: 'Shoot laser beam!', cooldown: 70 },
+            { name: 'VAMPIRE', bodyColor: '#2f0f3d', headColor: '#e8e8e8', hairColor: '#1a1a1a', hasHelmet: false, hasMask: false, hasWizardHat: false, hasCape: true,
+              ability: 'BITE', abilityDesc: 'Damage enemy = heal!', cooldown: 120 },
+            { name: 'CHEF', bodyColor: '#ffffff', headColor: '#f4c45a', hairColor: '#4a2f1a', hasHelmet: false, hasMask: false, hasWizardHat: false, hasChefHat: true,
+              ability: 'THROW FOOD', abilityDesc: 'Throw pie at enemies!', cooldown: 50 },
+            { name: 'DIVER', bodyColor: '#000080', headColor: '#f4c45a', hairColor: null, hasHelmet: false, hasMask: false, hasWizardHat: false, hasDiverMask: true,
+              ability: 'FLOAT', abilityDesc: 'Float slowly down!', cooldown: 30 },
+            { name: 'ROCKSTAR', bodyColor: '#1a1a1a', headColor: '#f4c45a', hairColor: '#ff1493', hasHelmet: false, hasMask: false, hasWizardHat: false, hasGlasses: true,
+              ability: 'SHOCKWAVE', abilityDesc: 'Blast all nearby enemies!', cooldown: 150 }
         ];
         let currentChar = 0;
         let canDoubleJump = false;
         let tempPlatforms = [];
         let fireballs = [];
         let carriedBrick = null; // Builder carries a brick
+        let floatTimer = 0; // Diver float ability
 
         // Player
         const player = { x: 50, y: 300, width: 40, height: 60, velX: 0, velY: 0, speed: 5, jumping: false, grounded: false, facingRight: true };
@@ -299,6 +316,84 @@
                         createParticles(player.x + 20, player.y + 30, '#ff69b4', 20);
                     }
                     break;
+                case 8: // Cowboy - Lasso (pull studs)
+                    for (let stud of studs) {
+                        if (!stud.collected) {
+                            const dx = stud.x - (player.x + 20);
+                            const dy = stud.y - (player.y + 30);
+                            const dist = Math.sqrt(dx*dx + dy*dy);
+                            if (dist < 200) {
+                                stud.x -= dx * 0.8;
+                                stud.y -= dy * 0.8;
+                            }
+                        }
+                    }
+                    createParticles(player.x + 20, player.y + 30, '#d2691e', 8);
+                    break;
+                case 9: // Firefighter - Water blast (push enemies)
+                    for (let enemy of enemies) {
+                        if (enemy.alive) {
+                            const dx = enemy.x - player.x;
+                            if (Math.abs(dx) < 200) {
+                                enemy.x += (dx > 0 ? 100 : -100);
+                            }
+                        }
+                    }
+                    createParticles(player.x + 20, player.y + 30, '#00bfff', 15);
+                    break;
+                case 10: // Scientist - Teleport
+                    player.x += player.facingRight ? 150 : -150;
+                    player.x = Math.max(0, Math.min(canvas.width - 40, player.x));
+                    createParticles(player.x + 20, player.y + 30, '#98fb98', 20);
+                    break;
+                case 11: // Robot - Laser
+                    fireballs.push({ x: player.x + 20, y: player.y + 25, velX: player.facingRight ? 15 : -15, size: 8, isLaser: true });
+                    createParticles(player.x + 20, player.y + 25, '#ff0000', 5);
+                    break;
+                case 12: // Vampire - Bite attack
+                    for (let enemy of enemies) {
+                        if (enemy.alive) {
+                            const dx = Math.abs(enemy.x - player.x);
+                            const dy = Math.abs(enemy.y - player.y);
+                            if (dx < 60 && dy < 60) {
+                                enemy.alive = false;
+                                enemiesKilled++;
+                                score += 200;
+                                if (lives < 5) lives++;
+                                document.getElementById('lives').textContent = lives;
+                                document.getElementById('score').textContent = score;
+                                createParticles(enemy.x + 17, enemy.y + 25, '#8b0000', 15);
+                            }
+                        }
+                    }
+                    createParticles(player.x + 20, player.y + 10, '#8b0000', 8);
+                    break;
+                case 13: // Chef - Throw pie
+                    fireballs.push({ x: player.x + 20, y: player.y + 25, velX: player.facingRight ? 8 : -8, size: 18, isPie: true });
+                    createParticles(player.x + 20, player.y + 25, '#f5deb3', 5);
+                    break;
+                case 14: // Diver - Float mode
+                    player.velY = -5;
+                    floatTimer = 90;
+                    createParticles(player.x + 20, player.y + 60, '#00bfff', 10);
+                    break;
+                case 15: // Rockstar - Shockwave
+                    for (let enemy of enemies) {
+                        if (enemy.alive) {
+                            const dx = enemy.x - player.x;
+                            const dy = enemy.y - player.y;
+                            const dist = Math.sqrt(dx*dx + dy*dy);
+                            if (dist < 150) {
+                                enemy.alive = false;
+                                enemiesKilled++;
+                                score += 200;
+                                document.getElementById('score').textContent = score;
+                                createParticles(enemy.x + 17, enemy.y + 25, '#ff1493', 10);
+                            }
+                        }
+                    }
+                    createParticles(player.x + 20, player.y + 30, '#ff1493', 25);
+                    break;
             }
         }
 
@@ -316,6 +411,14 @@
             if (e.code === 'Digit6') { currentChar = 5; updateCharDisplay(); }
             if (e.code === 'Digit7') { currentChar = 6; updateCharDisplay(); }
             if (e.code === 'Digit8') { currentChar = 7; updateCharDisplay(); }
+            if (e.code === 'Digit9') { currentChar = 8; updateCharDisplay(); }
+            if (e.code === 'Digit0') { currentChar = 9; updateCharDisplay(); }
+            if (e.code === 'KeyQ') { currentChar = 10; updateCharDisplay(); }
+            if (e.code === 'KeyR') { currentChar = 11; updateCharDisplay(); }
+            if (e.code === 'KeyT') { currentChar = 12; updateCharDisplay(); }
+            if (e.code === 'KeyY') { currentChar = 13; updateCharDisplay(); }
+            if (e.code === 'KeyU') { currentChar = 14; updateCharDisplay(); }
+            if (e.code === 'KeyI') { currentChar = 15; updateCharDisplay(); }
             if (e.code === 'KeyE') useAbility();
 
             // Double jump for adventurer
@@ -515,13 +618,144 @@
                 ctx.beginPath();
                 ctx.arc(20, -12, 3, 0, Math.PI * 2);
                 ctx.fill();
+            }
+
+            if (c.hasCowboyHat) {
+                // Cowboy hat
+                ctx.fillStyle = '#8B4513';
+                ctx.beginPath();
+                ctx.ellipse(20, 2, 25, 6, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillRect(8, -12, 24, 14);
+                ctx.beginPath();
+                ctx.arc(20, -12, 12, Math.PI, 2 * Math.PI);
+                ctx.fill();
+            }
+
+            if (c.hasFireHelmet) {
+                // Firefighter helmet
+                ctx.fillStyle = '#ff4500';
+                ctx.beginPath();
+                ctx.arc(20, 5, 18, Math.PI, 2 * Math.PI);
+                ctx.fill();
+                ctx.fillRect(5, 0, 30, 8);
+                // Front piece
+                ctx.fillStyle = '#ffd700';
+                ctx.fillRect(15, -5, 10, 8);
+            }
+
+            if (c.hasGoggles) {
+                // Scientist goggles
+                ctx.fillStyle = '#333';
+                ctx.fillRect(5, 6, 30, 8);
                 ctx.fillStyle = '#87CEEB';
                 ctx.beginPath();
-                ctx.arc(10, -10, 2, 0, Math.PI * 2);
+                ctx.arc(12, 10, 6, 0, Math.PI * 2);
                 ctx.fill();
                 ctx.beginPath();
-                ctx.arc(30, -10, 2, 0, Math.PI * 2);
+                ctx.arc(28, 10, 6, 0, Math.PI * 2);
                 ctx.fill();
+                // Wild hair
+                ctx.fillStyle = c.hairColor;
+                ctx.beginPath();
+                for (let i = 0; i < 7; i++) {
+                    ctx.moveTo(5 + i*5, 0);
+                    ctx.lineTo(7 + i*5, -10 - Math.random()*5);
+                    ctx.lineTo(10 + i*5, 0);
+                }
+                ctx.fill();
+            }
+
+            if (c.isPlayerRobot) {
+                // Robot head features
+                ctx.fillStyle = '#666';
+                ctx.fillRect(5, -8, 30, 8);
+                ctx.fillStyle = '#ff0000';
+                ctx.fillRect(8, 6, 10, 4);
+                ctx.fillRect(22, 6, 10, 4);
+                // Antenna
+                ctx.fillStyle = '#888';
+                ctx.fillRect(18, -15, 4, 10);
+                ctx.beginPath();
+                ctx.arc(20, -17, 4, 0, Math.PI * 2);
+                ctx.fillStyle = '#00ff00';
+                ctx.fill();
+            }
+
+            if (c.hasCape) {
+                // Vampire cape
+                ctx.fillStyle = '#4a0000';
+                ctx.beginPath();
+                ctx.moveTo(-5, 20);
+                ctx.lineTo(-10, 55);
+                ctx.lineTo(10, 60);
+                ctx.lineTo(5, 20);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.moveTo(35, 20);
+                ctx.lineTo(30, 60);
+                ctx.lineTo(50, 55);
+                ctx.lineTo(45, 20);
+                ctx.fill();
+                // Fangs
+                ctx.fillStyle = '#fff';
+                ctx.beginPath();
+                ctx.moveTo(14, 18);
+                ctx.lineTo(16, 24);
+                ctx.lineTo(18, 18);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.moveTo(22, 18);
+                ctx.lineTo(24, 24);
+                ctx.lineTo(26, 18);
+                ctx.fill();
+            }
+
+            if (c.hasChefHat) {
+                // Chef hat
+                ctx.fillStyle = '#fff';
+                ctx.fillRect(5, -25, 30, 28);
+                ctx.beginPath();
+                ctx.arc(12, -25, 8, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(20, -28, 10, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(28, -25, 8, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            if (c.hasDiverMask) {
+                // Diver mask
+                ctx.fillStyle = '#000080';
+                ctx.fillRect(3, 0, 34, 15);
+                ctx.fillStyle = '#87CEEB';
+                ctx.fillRect(6, 3, 28, 10);
+                // Snorkel
+                ctx.fillStyle = '#ff6600';
+                ctx.fillRect(35, -10, 6, 25);
+                ctx.beginPath();
+                ctx.arc(38, -10, 5, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            if (c.hasGlasses) {
+                // Rockstar sunglasses
+                ctx.fillStyle = '#1a1a1a';
+                ctx.fillRect(5, 6, 30, 8);
+                ctx.fillStyle = '#ff1493';
+                ctx.fillRect(7, 7, 10, 6);
+                ctx.fillRect(23, 7, 10, 6);
+                // Spiky hair
+                ctx.fillStyle = c.hairColor;
+                for (let i = 0; i < 5; i++) {
+                    ctx.beginPath();
+                    ctx.moveTo(5 + i*7, 0);
+                    ctx.lineTo(8 + i*7, -15);
+                    ctx.lineTo(12 + i*7, 0);
+                    ctx.fill();
+                }
             }
 
             ctx.restore();
@@ -658,6 +892,28 @@
                 ctx.arc(fb.x - 5, fb.y - 5, 4, 0, Math.PI * 2);
                 ctx.fillStyle = 'rgba(255,255,255,0.4)';
                 ctx.fill();
+            } else if (fb.isLaser) {
+                // Laser beam - red energy
+                ctx.fillStyle = '#ff0000';
+                ctx.fillRect(fb.x - 15, fb.y - 3, 30, 6);
+                ctx.fillStyle = '#ffcccc';
+                ctx.fillRect(fb.x - 12, fb.y - 1, 24, 2);
+            } else if (fb.isPie) {
+                // Pie - cream colored with crust
+                const grad = ctx.createRadialGradient(fb.x, fb.y, 0, fb.x, fb.y, fb.size);
+                grad.addColorStop(0, '#fffef0');
+                grad.addColorStop(0.6, '#f5deb3');
+                grad.addColorStop(1, '#d2691e');
+                ctx.fillStyle = grad;
+                ctx.fill();
+                // Whipped cream top
+                ctx.fillStyle = '#fff';
+                ctx.beginPath();
+                ctx.arc(fb.x - 4, fb.y - 4, 5, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(fb.x + 4, fb.y - 2, 4, 0, Math.PI * 2);
+                ctx.fill();
             } else {
                 // Fireball
                 const grad = ctx.createRadialGradient(fb.x, fb.y, 0, fb.x, fb.y, fb.size);
@@ -774,6 +1030,13 @@
                 player.velY = jumpForce;
                 player.grounded = false;
                 if (currentChar === 0 && abilityCooldown <= 0) canDoubleJump = true;
+            }
+
+            // Float timer (Diver ability)
+            if (floatTimer > 0) {
+                floatTimer--;
+                player.velY = Math.min(player.velY, 1); // Slow fall
+                createParticles(player.x + 20, player.y + 60, '#00bfff', 1);
             }
 
             // Physics
