@@ -80,7 +80,7 @@
         const ctx = canvas.getContext('2d');
 
         // Game state
-        let score = 0, lives = 3, enemiesKilled = 0, currentLevel = 1;
+        let score = 0, lives = 5, enemiesKilled = 0, currentLevel = 1;
         const maxLevel = 100;
         let gameRunning = true, invincible = false, invincibleTimer = 0;
         let celebrating = false, hotdogs = [];
@@ -162,33 +162,31 @@
                     studs.push({ x: 150 + i * 130, y: 280, collected: false });
                 }
             } else {
-                // Normal level - procedural generation (EASY MODE)
-                const numPlatforms = 5 + Math.floor(levelNum / 8);
-                let lastX = 50, lastY = 360;
+                // Normal level - SUPER EASY MODE
+                const numPlatforms = 6 + Math.floor(levelNum / 10);
+                let lastX = 30, lastY = 370;
 
                 for (let i = 0; i < numPlatforms; i++) {
-                    const width = 100 + Math.random() * 60; // Bigger platforms
-                    const x = lastX + 60 + Math.random() * 50; // Smaller gaps
-                    const y = Math.max(150, Math.min(380, lastY + (Math.random() - 0.5) * 80)); // Less height variation
+                    const width = 140 + Math.random() * 50; // HUGE platforms
+                    const x = lastX + 40 + Math.random() * 30; // TINY gaps
+                    const y = Math.max(200, Math.min(385, lastY + (Math.random() - 0.5) * 50)); // Almost flat
 
-                    if (x + width < 780) {
-                        platforms.push({ x, y, width, height: 28, color: colors[i % colors.length] });
-                        studs.push({ x: x + width/2 - 20, y: y - 30, collected: false });
-                        studs.push({ x: x + width/2 + 20, y: y - 30, collected: false });
+                    if (x + width < 790) {
+                        platforms.push({ x, y, width, height: 30, color: colors[i % colors.length] });
+                        // Studs right on the platform, easy to get
+                        studs.push({ x: x + width/2, y: y - 25, collected: false });
                         lastX = x;
                         lastY = y;
                     }
                 }
 
-                // Fewer and slower enemies
-                const numEnemies = Math.min(1 + Math.floor(levelNum / 25), 3);
+                // Very few slow enemies (only after level 10)
+                const numEnemies = levelNum > 10 ? Math.min(1 + Math.floor(levelNum / 35), 2) : 0;
                 for (let i = 0; i < numEnemies; i++) {
-                    const platIndex = i % platforms.length;
-                    const plat = platforms[platIndex];
                     enemies.push({
-                        x: plat.x + 20, y: plat.y - 50, width: 35, height: 50,
-                        velX: (0.8 + difficulty * 0.08) * (Math.random() > 0.5 ? 1 : -1), // Slower
-                        type: i % 3, platIndex, alive: true
+                        x: 400 + i * 150, y: 370, width: 35, height: 50,
+                        velX: 0.5 * (Math.random() > 0.5 ? 1 : -1), // SUPER slow
+                        type: i % 3, platIndex: 0, alive: true
                     });
                 }
             }
@@ -570,7 +568,7 @@
             currentLevel++;
             celebrating = false;
             hotdogs = [];
-            lives = 3; // Restore health every level!
+            lives = 5; // Restore health every level!
             document.getElementById('lives').textContent = lives;
             generateLevel(currentLevel);
             gameRunning = true;
@@ -865,7 +863,7 @@
 
         function restartGame() {
             score = 0;
-            lives = 3;
+            lives = 5;
             enemiesKilled = 0;
             currentLevel = 1;
             invincible = false;
