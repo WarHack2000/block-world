@@ -64,7 +64,7 @@
         <div class="score-item ability">ABILITY: <span id="abilityName">DOUBLE JUMP</span> [E]</div>
         <div class="score-item ability">COOLDOWN: <span id="cooldown">READY</span></div>
     </div>
-    <p class="controls">ARROWS/WASD: Move | SPACE: Jump | E: Use Ability | 1-4: Switch Character | BOSSES at levels 25, 50, 75, 100!</p>
+    <p class="controls">ARROWS/WASD: Move | SPACE: Jump | E: Use Ability | 1-8: Switch Character | BOSSES at levels 25, 50, 75, 100!</p>
 
     <div class="game-over" id="gameOver">
         <h2 id="gameOverTitle">GAME OVER</h2>
@@ -95,7 +95,15 @@
             { name: 'NINJA', bodyColor: '#2d6a4f', headColor: '#f4c45a', hairColor: null, hasHelmet: false, hasMask: true, hasWizardHat: false,
               ability: 'DASH', abilityDesc: 'Super speed dash!', cooldown: 90 },
             { name: 'WIZARD', bodyColor: '#7b2cbf', headColor: '#f4c45a', hairColor: null, hasHelmet: false, hasMask: false, hasWizardHat: true,
-              ability: 'FIREBALL', abilityDesc: 'Shoot a magic fireball!', cooldown: 120 }
+              ability: 'FIREBALL', abilityDesc: 'Shoot a magic fireball!', cooldown: 120 },
+            { name: 'PIRATE', bodyColor: '#8B4513', headColor: '#f4c45a', hairColor: '#222', hasHelmet: false, hasMask: false, hasWizardHat: false, hasPirateHat: true,
+              ability: 'CANNON', abilityDesc: 'Blast enemies with cannonball!', cooldown: 100 },
+            { name: 'SPACEMAN', bodyColor: '#ffffff', headColor: '#87CEEB', hairColor: null, hasHelmet: false, hasMask: false, hasWizardHat: false, hasSpaceHelmet: true,
+              ability: 'JETPACK', abilityDesc: 'Fly upward!', cooldown: 45 },
+            { name: 'KNIGHT', bodyColor: '#708090', headColor: '#f4c45a', hairColor: null, hasHelmet: false, hasMask: false, hasWizardHat: false, hasKnightHelmet: true,
+              ability: 'SHIELD', abilityDesc: 'Become invincible!', cooldown: 150 },
+            { name: 'PRINCESS', bodyColor: '#ff69b4', headColor: '#f4c45a', hairColor: '#ffd700', hasHelmet: false, hasMask: false, hasWizardHat: false, hasCrown: true,
+              ability: 'HEAL', abilityDesc: 'Restore a life!', cooldown: 300 }
         ];
         let currentChar = 0;
         let canDoubleJump = false;
@@ -269,6 +277,28 @@
                     fireballs.push({ x: player.x + 20, y: player.y + 25, velX: player.facingRight ? 10 : -10, size: 15 });
                     createParticles(player.x + 20, player.y + 25, '#ff6600', 5);
                     break;
+                case 4: // Pirate - Cannonball (big slow projectile)
+                    fireballs.push({ x: player.x + 20, y: player.y + 25, velX: player.facingRight ? 8 : -8, size: 20, isCannonball: true });
+                    createParticles(player.x + 20, player.y + 25, '#333', 10);
+                    break;
+                case 5: // Spaceman - Jetpack
+                    player.velY = -18;
+                    createParticles(player.x + 20, player.y + 60, '#ff6600', 8);
+                    createParticles(player.x + 10, player.y + 60, '#ffff00', 5);
+                    createParticles(player.x + 30, player.y + 60, '#ffff00', 5);
+                    break;
+                case 6: // Knight - Shield (longer invincibility)
+                    invincible = true;
+                    invincibleTimer = 180;
+                    createParticles(player.x + 20, player.y + 30, '#708090', 15);
+                    break;
+                case 7: // Princess - Heal
+                    if (lives < 5) {
+                        lives++;
+                        document.getElementById('lives').textContent = lives;
+                        createParticles(player.x + 20, player.y + 30, '#ff69b4', 20);
+                    }
+                    break;
             }
         }
 
@@ -282,6 +312,10 @@
             if (e.code === 'Digit2') { currentChar = 1; updateCharDisplay(); }
             if (e.code === 'Digit3') { currentChar = 2; updateCharDisplay(); }
             if (e.code === 'Digit4') { currentChar = 3; updateCharDisplay(); }
+            if (e.code === 'Digit5') { currentChar = 4; updateCharDisplay(); }
+            if (e.code === 'Digit6') { currentChar = 5; updateCharDisplay(); }
+            if (e.code === 'Digit7') { currentChar = 6; updateCharDisplay(); }
+            if (e.code === 'Digit8') { currentChar = 7; updateCharDisplay(); }
             if (e.code === 'KeyE') useAbility();
 
             // Double jump for adventurer
@@ -409,6 +443,87 @@
                 drawStar(20, -15, 5, 5, 3);
             }
 
+            if (c.hasPirateHat) {
+                // Pirate hat
+                ctx.fillStyle = '#222';
+                ctx.beginPath();
+                ctx.ellipse(20, 0, 22, 8, 0, Math.PI, 2 * Math.PI);
+                ctx.fill();
+                ctx.fillRect(5, -15, 30, 15);
+                // Skull
+                ctx.fillStyle = '#fff';
+                ctx.beginPath();
+                ctx.arc(20, -8, 5, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = '#222';
+                ctx.fillRect(17, -6, 2, 2);
+                ctx.fillRect(21, -6, 2, 2);
+            }
+
+            if (c.hasSpaceHelmet) {
+                // Space helmet (glass dome)
+                ctx.strokeStyle = '#87CEEB';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.arc(20, 8, 18, Math.PI, 2 * Math.PI);
+                ctx.stroke();
+                ctx.fillStyle = 'rgba(135, 206, 235, 0.3)';
+                ctx.beginPath();
+                ctx.arc(20, 8, 17, Math.PI, 2 * Math.PI);
+                ctx.fill();
+                // Antenna
+                ctx.fillStyle = '#ff0000';
+                ctx.fillRect(18, -12, 4, 10);
+                ctx.beginPath();
+                ctx.arc(20, -14, 4, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            if (c.hasKnightHelmet) {
+                // Knight helmet
+                ctx.fillStyle = '#708090';
+                ctx.beginPath();
+                ctx.arc(20, 5, 18, Math.PI, 2 * Math.PI);
+                ctx.fill();
+                ctx.fillRect(2, 0, 36, 12);
+                // Visor
+                ctx.fillStyle = '#333';
+                ctx.fillRect(8, 6, 24, 6);
+                // Plume
+                ctx.fillStyle = '#e63946';
+                ctx.beginPath();
+                ctx.ellipse(20, -10, 6, 12, 0, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            if (c.hasCrown) {
+                // Princess crown
+                ctx.fillStyle = '#ffd700';
+                ctx.fillRect(5, -8, 30, 8);
+                // Crown points
+                ctx.beginPath();
+                ctx.moveTo(5, -8);
+                ctx.lineTo(10, -18);
+                ctx.lineTo(15, -8);
+                ctx.lineTo(20, -20);
+                ctx.lineTo(25, -8);
+                ctx.lineTo(30, -18);
+                ctx.lineTo(35, -8);
+                ctx.fill();
+                // Gems
+                ctx.fillStyle = '#ff69b4';
+                ctx.beginPath();
+                ctx.arc(20, -12, 3, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = '#87CEEB';
+                ctx.beginPath();
+                ctx.arc(10, -10, 2, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(30, -10, 2, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
             ctx.restore();
         }
 
@@ -530,12 +645,28 @@
         function drawFireball(fb) {
             ctx.beginPath();
             ctx.arc(fb.x, fb.y, fb.size, 0, Math.PI * 2);
-            const grad = ctx.createRadialGradient(fb.x, fb.y, 0, fb.x, fb.y, fb.size);
-            grad.addColorStop(0, '#ffff00');
-            grad.addColorStop(0.5, '#ff6600');
-            grad.addColorStop(1, '#ff0000');
-            ctx.fillStyle = grad;
-            ctx.fill();
+            if (fb.isCannonball) {
+                // Cannonball - dark metal ball
+                const grad = ctx.createRadialGradient(fb.x - 3, fb.y - 3, 0, fb.x, fb.y, fb.size);
+                grad.addColorStop(0, '#666');
+                grad.addColorStop(0.5, '#333');
+                grad.addColorStop(1, '#111');
+                ctx.fillStyle = grad;
+                ctx.fill();
+                // Highlight
+                ctx.beginPath();
+                ctx.arc(fb.x - 5, fb.y - 5, 4, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255,255,255,0.4)';
+                ctx.fill();
+            } else {
+                // Fireball
+                const grad = ctx.createRadialGradient(fb.x, fb.y, 0, fb.x, fb.y, fb.size);
+                grad.addColorStop(0, '#ffff00');
+                grad.addColorStop(0.5, '#ff6600');
+                grad.addColorStop(1, '#ff0000');
+                ctx.fillStyle = grad;
+                ctx.fill();
+            }
         }
 
         function checkCollision(r1, r2) {
