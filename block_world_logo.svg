@@ -1,0 +1,272 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300">
+  <defs>
+    <!-- Drop shadow -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="4" dy="4" stdDeviation="3" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+
+    <!-- Glossy effect -->
+    <linearGradient id="glossy" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:rgba(255,255,255,0.4)"/>
+      <stop offset="50%" style="stop-color:rgba(255,255,255,0.1)"/>
+      <stop offset="100%" style="stop-color:rgba(0,0,0,0.2)"/>
+    </linearGradient>
+
+    <!-- Minifig face gradient -->
+    <linearGradient id="faceGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffdd88"/>
+      <stop offset="100%" style="stop-color:#f4c45a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="600" height="300" fill="#1a1a2e"/>
+
+  <!-- Decorative bricks scattered around -->
+  <!-- Red brick top left -->
+  <g transform="translate(30, 40) rotate(-15)">
+    <rect width="60" height="30" rx="3" fill="#e63946" filter="url(#shadow)"/>
+    <circle cx="15" cy="15" r="6" fill="#ff6b6b" stroke="#c1121f" stroke-width="2"/>
+    <circle cx="45" cy="15" r="6" fill="#ff6b6b" stroke="#c1121f" stroke-width="2"/>
+    <rect width="60" height="30" rx="3" fill="url(#glossy)"/>
+  </g>
+
+  <!-- Blue brick top right -->
+  <g transform="translate(500, 30) rotate(20)">
+    <rect width="60" height="30" rx="3" fill="#0077b6" filter="url(#shadow)"/>
+    <circle cx="15" cy="15" r="6" fill="#00b4d8" stroke="#005f8a" stroke-width="2"/>
+    <circle cx="45" cy="15" r="6" fill="#00b4d8" stroke="#005f8a" stroke-width="2"/>
+    <rect width="60" height="30" rx="3" fill="url(#glossy)"/>
+  </g>
+
+  <!-- MINIFIG 1 - Red adventurer (left side, waving) -->
+  <g transform="translate(25, 120)" filter="url(#shadow)">
+    <!-- Legs -->
+    <rect x="8" y="58" width="10" height="16" rx="2" fill="#1a1a8e"/>
+    <rect x="22" y="58" width="10" height="16" rx="2" fill="#1a1a8e"/>
+    <!-- Body -->
+    <rect x="5" y="32" width="30" height="28" rx="3" fill="#e63946"/>
+    <rect x="5" y="32" width="30" height="28" rx="3" fill="url(#glossy)"/>
+    <!-- Pocket detail -->
+    <rect x="10" y="42" width="8" height="6" rx="1" fill="#c1121f"/>
+    <!-- Arms -->
+    <rect x="-5" y="32" width="10" height="20" rx="3" fill="#e63946"/>
+    <rect x="35" y="26" width="10" height="20" rx="3" fill="#e63946" transform="rotate(30 40 36)"/>
+    <!-- Hands (waving!) -->
+    <circle cx="0" cy="54" r="5" fill="#f4c45a"/>
+    <circle cx="52" cy="30" r="5" fill="#f4c45a"/>
+    <!-- Head -->
+    <rect x="5" y="8" width="30" height="26" rx="4" fill="url(#faceGrad)"/>
+    <!-- Face -->
+    <circle cx="13" cy="18" r="3" fill="#222"/>
+    <circle cx="27" cy="18" r="3" fill="#222"/>
+    <ellipse cx="20" cy="27" rx="8" ry="4" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+    <!-- Hair -->
+    <path d="M5 14 Q5 4 20 4 Q35 4 35 14 L35 10 Q35 2 20 2 Q5 2 5 10 Z" fill="#8B4513"/>
+    <!-- Head stud -->
+    <ellipse cx="20" cy="3" rx="6" ry="3" fill="#f4c45a" stroke="#daa520" stroke-width="1"/>
+  </g>
+
+  <!-- MINIFIG 2 - Blue builder (right side, holding brick) -->
+  <g transform="translate(535, 115)" filter="url(#shadow)">
+    <!-- Legs -->
+    <rect x="8" y="58" width="10" height="16" rx="2" fill="#333"/>
+    <rect x="22" y="58" width="10" height="16" rx="2" fill="#333"/>
+    <!-- Body -->
+    <rect x="5" y="32" width="30" height="28" rx="3" fill="#0077b6"/>
+    <rect x="5" y="32" width="30" height="28" rx="3" fill="url(#glossy)"/>
+    <!-- Tool belt -->
+    <rect x="5" y="50" width="30" height="5" fill="#8B4513"/>
+    <!-- Arms -->
+    <rect x="-5" y="32" width="10" height="20" rx="3" fill="#0077b6"/>
+    <rect x="35" y="32" width="10" height="20" rx="3" fill="#0077b6"/>
+    <!-- Hands -->
+    <circle cx="0" cy="54" r="5" fill="#f4c45a"/>
+    <circle cx="40" cy="54" r="5" fill="#f4c45a"/>
+    <!-- Holding a small brick! -->
+    <rect x="-15" y="50" width="20" height="12" rx="2" fill="#f9c74f"/>
+    <circle cx="-10" cy="53" r="3" fill="#fcf6bd" stroke="#f9844a" stroke-width="1"/>
+    <circle cx="0" cy="53" r="3" fill="#fcf6bd" stroke="#f9844a" stroke-width="1"/>
+    <!-- Head -->
+    <rect x="5" y="8" width="30" height="26" rx="4" fill="url(#faceGrad)"/>
+    <!-- Face - happy -->
+    <circle cx="13" cy="18" r="3" fill="#222"/>
+    <circle cx="27" cy="18" r="3" fill="#222"/>
+    <path d="M12 26 Q20 32 28 26" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+    <!-- Hard hat -->
+    <ellipse cx="20" cy="10" rx="18" ry="6" fill="#f9c74f"/>
+    <rect x="2" y="4" width="36" height="8" rx="3" fill="#f9c74f"/>
+    <ellipse cx="20" cy="3" rx="6" ry="3" fill="#ffdd88" stroke="#f9844a" stroke-width="1"/>
+  </g>
+
+  <!-- MINIFIG 3 - Green ninja (bottom left, action pose) -->
+  <g transform="translate(70, 205) rotate(-10)" filter="url(#shadow)">
+    <!-- Legs (spread stance) -->
+    <rect x="3" y="48" width="9" height="14" rx="2" fill="#1b4332" transform="rotate(-15 8 48)"/>
+    <rect x="23" y="48" width="9" height="14" rx="2" fill="#1b4332" transform="rotate(15 27 48)"/>
+    <!-- Body -->
+    <rect x="4" y="26" width="26" height="24" rx="3" fill="#2d6a4f"/>
+    <rect x="4" y="26" width="26" height="24" rx="3" fill="url(#glossy)"/>
+    <!-- Belt -->
+    <rect x="4" y="42" width="26" height="4" fill="#111"/>
+    <!-- Arms (action pose) -->
+    <rect x="-8" y="24" width="9" height="18" rx="3" fill="#2d6a4f" transform="rotate(-30 -3 24)"/>
+    <rect x="33" y="24" width="9" height="18" rx="3" fill="#2d6a4f" transform="rotate(45 37 24)"/>
+    <!-- Hands -->
+    <circle cx="-10" cy="32" r="4" fill="#f4c45a"/>
+    <circle cx="48" cy="34" r="4" fill="#f4c45a"/>
+    <!-- Sword! -->
+    <rect x="46" y="10" width="3" height="28" fill="#aaa"/>
+    <rect x="43" y="34" width="9" height="5" rx="1" fill="#8B4513"/>
+    <!-- Head with ninja mask -->
+    <rect x="4" y="6" width="26" height="22" rx="4" fill="#2d6a4f"/>
+    <!-- Eyes only visible -->
+    <rect x="6" y="12" width="22" height="8" rx="2" fill="url(#faceGrad)"/>
+    <circle cx="11" cy="16" r="2.5" fill="#222"/>
+    <circle cx="23" cy="16" r="2.5" fill="#222"/>
+    <!-- Head stud -->
+    <ellipse cx="17" cy="4" rx="5" ry="2.5" fill="#2d6a4f" stroke="#1b4332" stroke-width="1"/>
+  </g>
+
+  <!-- MINIFIG 4 - Purple wizard (bottom right) -->
+  <g transform="translate(495, 210)" filter="url(#shadow)">
+    <!-- Legs -->
+    <rect x="6" y="50" width="9" height="14" rx="2" fill="#4a0080"/>
+    <rect x="19" y="50" width="9" height="14" rx="2" fill="#4a0080"/>
+    <!-- Robe/Body -->
+    <path d="M2 28 L32 28 L28 52 L6 52 Z" fill="#7b2cbf"/>
+    <path d="M2 28 L32 28 L28 52 L6 52 Z" fill="url(#glossy)"/>
+    <!-- Stars on robe -->
+    <polygon points="12,38 13,41 16,41 14,43 15,46 12,44 9,46 10,43 8,41 11,41" fill="#ffd700"/>
+    <polygon points="22,42 23,44 25,44 24,45 24.5,47 22,46 19.5,47 20,45 19,44 21,44" fill="#ffd700"/>
+    <!-- Arms -->
+    <rect x="-4" y="28" width="8" height="16" rx="3" fill="#7b2cbf"/>
+    <rect x="30" y="28" width="8" height="16" rx="3" fill="#7b2cbf"/>
+    <!-- Hands -->
+    <circle cx="0" cy="46" r="4" fill="#f4c45a"/>
+    <circle cx="34" cy="46" r="4" fill="#f4c45a"/>
+    <!-- Magic wand! -->
+    <rect x="32" y="20" width="3" height="30" fill="#8B4513" transform="rotate(20 34 35)"/>
+    <polygon points="44,12 46,18 52,18 47,22 49,28 44,24 39,28 41,22 36,18 42,18" fill="#ffd700"/>
+    <!-- Head -->
+    <rect x="4" y="6" width="26" height="22" rx="4" fill="url(#faceGrad)"/>
+    <!-- Face - wise smile -->
+    <circle cx="11" cy="14" r="2.5" fill="#222"/>
+    <circle cx="23" cy="14" r="2.5" fill="#222"/>
+    <path d="M11 22 Q17 26 23 22" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+    <!-- Beard -->
+    <path d="M8 24 Q17 35 26 24" fill="#cccccc"/>
+    <!-- Wizard hat -->
+    <polygon points="17 -15 -2 10 36 10" fill="#7b2cbf"/>
+    <ellipse cx="17" cy="10" rx="20" ry="5" fill="#7b2cbf"/>
+    <polygon points="17 -15 -2 10 36 10" fill="url(#glossy)"/>
+    <!-- Star on hat -->
+    <polygon points="17,-5 18,0 22,0 19,3 20,7 17,5 14,7 15,3 12,0 16,0" fill="#ffd700"/>
+  </g>
+
+  <!-- BLOCK text - each letter is a brick -->
+  <g filter="url(#shadow)">
+    <!-- B -->
+    <g transform="translate(95, 90)">
+      <rect width="70" height="55" rx="5" fill="#e63946"/>
+      <circle cx="18" cy="14" r="7" fill="#ff8fa3" stroke="#c1121f" stroke-width="2"/>
+      <circle cx="52" cy="14" r="7" fill="#ff8fa3" stroke="#c1121f" stroke-width="2"/>
+      <rect width="70" height="55" rx="5" fill="url(#glossy)"/>
+      <text x="35" y="45" font-family="Arial Black, sans-serif" font-size="42" font-weight="bold" fill="white" text-anchor="middle">B</text>
+    </g>
+
+    <!-- L -->
+    <g transform="translate(175, 90)">
+      <rect width="70" height="55" rx="5" fill="#f9c74f"/>
+      <circle cx="18" cy="14" r="7" fill="#fcf6bd" stroke="#f9844a" stroke-width="2"/>
+      <circle cx="52" cy="14" r="7" fill="#fcf6bd" stroke="#f9844a" stroke-width="2"/>
+      <rect width="70" height="55" rx="5" fill="url(#glossy)"/>
+      <text x="35" y="45" font-family="Arial Black, sans-serif" font-size="42" font-weight="bold" fill="white" text-anchor="middle">L</text>
+    </g>
+
+    <!-- O -->
+    <g transform="translate(255, 90)">
+      <rect width="70" height="55" rx="5" fill="#2d6a4f"/>
+      <circle cx="18" cy="14" r="7" fill="#40916c" stroke="#1b4332" stroke-width="2"/>
+      <circle cx="52" cy="14" r="7" fill="#40916c" stroke="#1b4332" stroke-width="2"/>
+      <rect width="70" height="55" rx="5" fill="url(#glossy)"/>
+      <text x="35" y="45" font-family="Arial Black, sans-serif" font-size="42" font-weight="bold" fill="white" text-anchor="middle">O</text>
+    </g>
+
+    <!-- C -->
+    <g transform="translate(335, 90)">
+      <rect width="70" height="55" rx="5" fill="#0077b6"/>
+      <circle cx="18" cy="14" r="7" fill="#00b4d8" stroke="#005f8a" stroke-width="2"/>
+      <circle cx="52" cy="14" r="7" fill="#00b4d8" stroke="#005f8a" stroke-width="2"/>
+      <rect width="70" height="55" rx="5" fill="url(#glossy)"/>
+      <text x="35" y="45" font-family="Arial Black, sans-serif" font-size="42" font-weight="bold" fill="white" text-anchor="middle">C</text>
+    </g>
+
+    <!-- K -->
+    <g transform="translate(415, 90)">
+      <rect width="70" height="55" rx="5" fill="#7b2cbf"/>
+      <circle cx="18" cy="14" r="7" fill="#c77dff" stroke="#5a189a" stroke-width="2"/>
+      <circle cx="52" cy="14" r="7" fill="#c77dff" stroke="#5a189a" stroke-width="2"/>
+      <rect width="70" height="55" rx="5" fill="url(#glossy)"/>
+      <text x="35" y="45" font-family="Arial Black, sans-serif" font-size="42" font-weight="bold" fill="white" text-anchor="middle">K</text>
+    </g>
+  </g>
+
+  <!-- WORLD text -->
+  <g filter="url(#shadow)">
+    <!-- W -->
+    <g transform="translate(130, 160)">
+      <rect width="60" height="48" rx="4" fill="#f48c06"/>
+      <circle cx="15" cy="12" r="6" fill="#ffba08" stroke="#e85d04" stroke-width="2"/>
+      <circle cx="45" cy="12" r="6" fill="#ffba08" stroke="#e85d04" stroke-width="2"/>
+      <rect width="60" height="48" rx="4" fill="url(#glossy)"/>
+      <text x="30" y="40" font-family="Arial Black, sans-serif" font-size="36" font-weight="bold" fill="white" text-anchor="middle">W</text>
+    </g>
+
+    <!-- O -->
+    <g transform="translate(200, 160)">
+      <rect width="60" height="48" rx="4" fill="#e63946"/>
+      <circle cx="15" cy="12" r="6" fill="#ff8fa3" stroke="#c1121f" stroke-width="2"/>
+      <circle cx="45" cy="12" r="6" fill="#ff8fa3" stroke="#c1121f" stroke-width="2"/>
+      <rect width="60" height="48" rx="4" fill="url(#glossy)"/>
+      <text x="30" y="40" font-family="Arial Black, sans-serif" font-size="36" font-weight="bold" fill="white" text-anchor="middle">O</text>
+    </g>
+
+    <!-- R -->
+    <g transform="translate(270, 160)">
+      <rect width="60" height="48" rx="4" fill="#0077b6"/>
+      <circle cx="15" cy="12" r="6" fill="#00b4d8" stroke="#005f8a" stroke-width="2"/>
+      <circle cx="45" cy="12" r="6" fill="#00b4d8" stroke="#005f8a" stroke-width="2"/>
+      <rect width="60" height="48" rx="4" fill="url(#glossy)"/>
+      <text x="30" y="40" font-family="Arial Black, sans-serif" font-size="36" font-weight="bold" fill="white" text-anchor="middle">R</text>
+    </g>
+
+    <!-- L -->
+    <g transform="translate(340, 160)">
+      <rect width="60" height="48" rx="4" fill="#2d6a4f"/>
+      <circle cx="15" cy="12" r="6" fill="#40916c" stroke="#1b4332" stroke-width="2"/>
+      <circle cx="45" cy="12" r="6" fill="#40916c" stroke="#1b4332" stroke-width="2"/>
+      <rect width="60" height="48" rx="4" fill="url(#glossy)"/>
+      <text x="30" y="40" font-family="Arial Black, sans-serif" font-size="36" font-weight="bold" fill="white" text-anchor="middle">L</text>
+    </g>
+
+    <!-- D -->
+    <g transform="translate(410, 160)">
+      <rect width="60" height="48" rx="4" fill="#f9c74f"/>
+      <circle cx="15" cy="12" r="6" fill="#fcf6bd" stroke="#f9844a" stroke-width="2"/>
+      <circle cx="45" cy="12" r="6" fill="#fcf6bd" stroke="#f9844a" stroke-width="2"/>
+      <rect width="60" height="48" rx="4" fill="url(#glossy)"/>
+      <text x="30" y="40" font-family="Arial Black, sans-serif" font-size="36" font-weight="bold" fill="white" text-anchor="middle">D</text>
+    </g>
+  </g>
+
+  <!-- Sparkle effects -->
+  <g fill="#ffffff" opacity="0.8">
+    <polygon points="150,60 153,67 160,67 155,72 157,80 150,75 143,80 145,72 140,67 147,67" />
+    <polygon points="450,55 452,60 458,60 454,64 456,70 450,66 444,70 446,64 442,60 448,60" />
+    <polygon points="300,45 302,50 308,50 304,54 306,60 300,56 294,60 296,54 292,50 298,50" />
+  </g>
+
+  <!-- Tagline -->
+  <text x="300" y="265" font-family="Arial, sans-serif" font-size="16" fill="#90e0ef" text-anchor="middle" letter-spacing="4">BUILD YOUR ADVENTURE</text>
+</svg>
